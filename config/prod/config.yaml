@@ -1,0 +1,64 @@
+serviceName: apollo-gem-service
+development: false
+DATABASE:
+  READDB:
+    CONNECTION_STRING: AWS_DATA
+    dbType: postgres
+    migrationFilePath: migrations
+  WRITEDB:
+    CONNECTION_STRING: AWS_DATA
+    dbType: postgres
+    migrationFilePath: migrations
+http:
+  port: :5001
+  development: false
+  shutdownTimeout: 15
+  resources: ["internal/resources/en.json", "internal/resources/vi.json"]
+  rateLimiting:
+    rateFormat: "10000-S"
+grpc:
+  port: :5005
+  development: false
+  maxConnectionIdle: 5
+  timeout: 15
+  maxConnectionAge: 5
+  time: 10
+LOGGER:
+  LOGGER_LEVEL: info
+  devMode: false
+  encoder: json
+jaeger:
+  enable: true
+  serviceName: apollo-gem-service
+  hostPort: AWS_DATA
+  logSpans: false
+KAFKA:
+  CONFIG:
+    BROKERS: AWS_DATA
+    USERNAME: AWS_DATA
+    PASSWORD: AWS_DATA
+  consumers:
+    gemCreateConsumer:
+      groupId: kaypay.prod.gem.source.create.consumer
+      topicName: kaypay.prod.gem.source.create.byte
+      numWorker: 1
+  producers:
+    gemCreateProducer:
+      topicName: kaypay.prod.gem.create.byte
+      initTopic: true
+      numPartitions: 10
+      replicationFactor: 1
+REDIS:
+  ADDRESS: AWS_DATA
+  PASSWORD: AWS_DATA
+  db: 0
+  poolSize: 300
+healthcheck:
+  interval: 10
+  port: :6001
+  goroutineThreshold: 100
+metrics:
+  prometheusPath: /metrics
+  prometheusPort: :8001
+SCHEDULER:
+  CRON_EXPRESSION: "0 9,21 * * *"

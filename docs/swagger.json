@@ -1,0 +1,192 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/gems/dashboard": {
+            "get": {
+                "description": "Get gem dashboard by userId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gems"
+                ],
+                "summary": "Get gem dashboard",
+                "parameters": [
+                    {
+                        "description": "Gem dashboard data",
+                        "name": "gem",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getgemdashboard.GetGemDashboardQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getgemdashboard.GetGemDashboardResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/gems/source": {
+            "get": {
+                "description": "Get gem source by userId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gems"
+                ],
+                "summary": "Get gem source",
+                "parameters": [
+                    {
+                        "description": "Gem Source data",
+                        "name": "gem",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getgemsourcebyuser.GetGemSourceByUserQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getgemsourcebyuser.GetGemSourceByUserResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "getgemdashboard.GetGemDashboard": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "pending": {
+                    "type": "number"
+                },
+                "redeemLimitation": {
+                    "type": "number"
+                },
+                "redeemable": {
+                    "type": "number"
+                },
+                "redeemed": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "getgemdashboard.GetGemDashboardQuery": {
+            "type": "object",
+            "required": [
+                "userId"
+            ],
+            "properties": {
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "getgemdashboard.GetGemDashboardResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/getgemdashboard.GetGemDashboard"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "getgemsourcebyuser.GetGemSourceByUser": {
+            "type": "object",
+            "properties": {
+                "collectedAt": {
+                    "type": "string"
+                },
+                "gems": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "sourceId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "getgemsourcebyuser.GetGemSourceByUserQuery": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "getgemsourcebyuser.GetGemSourceByUserResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getgemsourcebyuser.GetGemSourceByUser"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

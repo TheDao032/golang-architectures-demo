@@ -1,0 +1,6 @@
+{
+  "required": "{{.FieldName}} la bat buoc",
+  "gt": "{{.FieldName}} phải lớn hơn {{.FieldData}}",
+  "eqfield": "{{.FieldName}} giống với {{.FieldData}}"
+}
+

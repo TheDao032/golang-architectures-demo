@@ -1,0 +1,123 @@
+definitions:
+  getgemdashboard.GetGemDashboard:
+    properties:
+      id:
+        type: string
+      pending:
+        type: number
+      redeemLimitation:
+        type: number
+      redeemable:
+        type: number
+      redeemed:
+        type: number
+      status:
+        type: string
+      userId:
+        type: string
+    type: object
+  getgemdashboard.GetGemDashboardQuery:
+    properties:
+      userId:
+        type: string
+    required:
+    - userId
+    type: object
+  getgemdashboard.GetGemDashboardResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/getgemdashboard.GetGemDashboard'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  getgemsourcebyuser.GetGemSourceByUser:
+    properties:
+      collectedAt:
+        type: string
+      gems:
+        type: number
+      id:
+        type: string
+      metadata:
+        type: string
+      reason:
+        type: string
+      sourceId:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+    type: object
+  getgemsourcebyuser.GetGemSourceByUserQuery:
+    properties:
+      userId:
+        type: string
+    type: object
+  getgemsourcebyuser.GetGemSourceByUserResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/getgemsourcebyuser.GetGemSourceByUser'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /gems/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Get gem dashboard by userId
+      parameters:
+      - description: Gem dashboard data
+        in: body
+        name: gem
+        required: true
+        schema:
+          $ref: '#/definitions/getgemdashboard.GetGemDashboardQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/getgemdashboard.GetGemDashboardResponse'
+      summary: Get gem dashboard
+      tags:
+      - Gems
+  /gems/source:
+    get:
+      consumes:
+      - application/json
+      description: Get gem source by userId
+      parameters:
+      - description: Gem Source data
+        in: body
+        name: gem
+        required: true
+        schema:
+          $ref: '#/definitions/getgemsourcebyuser.GetGemSourceByUserQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/getgemsourcebyuser.GetGemSourceByUserResponse'
+      summary: Get gem source
+      tags:
+      - Gems
+swagger: "2.0"

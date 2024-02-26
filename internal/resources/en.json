@@ -1,0 +1,6 @@
+{
+  "required": "{{.FieldName}} is required",
+  "gt": "{{.FieldName}} must be greater than {{.FieldData}}",
+  "eqfield": "{{.FieldName}} must be equal with {{.FieldData}}"
+}
+
