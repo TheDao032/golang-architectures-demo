@@ -49,16 +49,16 @@ func (c *Consumer) processGemSourceCreated(ctx context.Context, r *kafka.Reader,
 		return
 	}
 
-	if err := retry.Do(func() error {
-		// Add logic here
-		_, err := c.service.GemService.CreateGemSourceHandler.Handle(ctx, createGemSourceCommand)
-
-		c.logger.Info(ctx, "Consume kafka: "+time.Now().String())
-		return err
-	}, append(retryOptions, retry.Context(ctx))...); err != nil {
-		c.logger.Error(ctx, "UpdateGemHandler.Handle", zap.Error(err))
-		return
-	}
+	// if err := retry.Do(func() error {
+	// 	// Add logic here
+	// 	_, err := c.service.GemService.CreateGemSourceHandler.Handle(ctx, createGemSourceCommand)
+	//
+	// 	c.logger.Info(ctx, "Consume kafka: "+time.Now().String())
+	// 	return err
+	// }, append(retryOptions, retry.Context(ctx))...); err != nil {
+	// 	c.logger.Error(ctx, "UpdateGemHandler.Handle", zap.Error(err))
+	// 	return
+	// }
 
 	c.commitMessage(ctx, r, m)
 }

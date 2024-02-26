@@ -2,11 +2,11 @@ serviceName: apollo-gem-service
 development: true
 DATABASE:
   READDB:
-    CONNECTION_STRING: postgres://daotnguyen:@localhost/gemservice_local?sslmode=disable
+    CONNECTION_STRING: postgres://postgres:2705@0.0.0.0/tsdb?sslmode=disable
     dbType: postgres
     migrationFilePath: migrations
   WRITEDB:
-    CONNECTION_STRING: postgres://daotnguyen:@localhost/gemservice_local?sslmode=disable
+    CONNECTION_STRING: postgres://postgres:2705@0.0.0.0/tsdb?sslmode=disable
     dbType: postgres
     migrationFilePath: migrations
 http:

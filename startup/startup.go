@@ -59,7 +59,7 @@ func Execute() {
 	// Init commands
 	command.UseCommands(
 		command.WithStartCommand(start, cfg, "DATABASE.WRITEDB"),
-		command.WithMigrationCommand("DATABASE.WRITEDB"),
+		// command.WithMigrationCommand("DATABASE.WRITEDB"),
 	)
 }
 

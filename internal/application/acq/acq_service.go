@@ -6,37 +6,19 @@ import (
 
 type ACQService struct {
 	// Commands
-	CreateACQHandler        *createacq.CreateACQdHandler
+	CreateACQHandler *createacq.CreateACQHandler
 
 	// Queries
 }
 
 func NewGemService(
 	// Commands
-	// createGemDashboardHandler *creategemdashboard.CreateGemDashboardHandler,
-	updatePendingGemDashboardHandler *updatependinggemdashboard.UpdatePendingGemDashboardHandler,
-	// createGemSourceHandler *creategemsource.CreateGemSourceHandler,
-	scanPendingGemSourceHandler *scanpendinggemsource.ScanPendingGemSourceHandler,
-	createGemHistoryHandler *creategemhistory.CreateGemHistoryHandler,
-
+	createACQHandler *createacq.CreateACQHandler,
 	// Queries
-	getGemDashboardHandler *getgemdashboard.GetGemDashboardHandler,
-	getGemSourceByUserHandler *getgemsourcebyuser.GetGemSourceByUserHandler,
-	getGemSourceBySourceHandler *getgemsourcebysource.GetGemSourceBySourceHandler,
-	getPendingGemSourceHandler *getpendinggemsource.GetPendingGemSourceHandler,
-) *GemService {
-	return &GemService{
+) *ACQService {
+	return &ACQService{
 		// Commands
-		// CreateGemDashboardHandler:        createGemDashboardHandler,
-		UpdatePendingGemDashboardHandler: updatePendingGemDashboardHandler,
-		// CreateGemSourceHandler:           createGemSourceHandler,
-		ScanPendingGemSourceHandler: scanPendingGemSourceHandler,
-		CreateGemHistoryHandler:     createGemHistoryHandler,
-
+		CreateACQHandler: createACQHandler,
 		// Queries
-		GetGemDashboardHandler:      getGemDashboardHandler,
-		GetGemSourceByUserHandler:   getGemSourceByUserHandler,
-		GetGemSourceBySourceHandler: getGemSourceBySourceHandler,
-		GetPendingGemSourceHandler:  getPendingGemSourceHandler,
 	}
 }

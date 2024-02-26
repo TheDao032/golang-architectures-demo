@@ -10,3 +10,7 @@ type CreateACQCommand struct {
 	NoiseFloor   float32   `json:"noiseFloor" binding:"required"`
 	AcqMode      int16     `json:"acqMode" binding:"required"`
 }
+
+type CreateACQResponse struct {
+  Data interface{} `json:"data"`
+}

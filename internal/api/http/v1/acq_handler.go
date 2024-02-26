@@ -5,14 +5,14 @@ import (
 
 	createacq "github.com/TheDao032/golang-architectures-demo/internal/application/acq/commands/create_acq"
 	"github.com/TheDao032/golang-architectures-demo/internal/service"
-	request "github.com/TheDao032/go-backend-utils-architecture/http/request"
+
+	// request "github.com/TheDao032/go-backend-utils-architecture/http/request"
 
 	"github.com/TheDao032/go-backend-utils-architecture/logger"
 	v "github.com/TheDao032/go-backend-utils-architecture/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
-
 
 type ACQHandler struct {
 	service *service.Service
@@ -33,33 +33,28 @@ func NewACQHandler(service *service.Service, logger logger.Logger) *ACQHandler {
 // @Accept json
 // @Produce json
 // @Param acq body createacq.CreateACQCommand true "ACQ data"
-// @Success 200 {object} getgemsourcebyuser.GetGemSourceByUserResponse
+// @Success 200 {object} createacq.GetGemSourceByUserResponse
 // @Router /gems/source [get]
-func (h *GemHandler) GetGemSourceByUserId(c *gin.Context) {
-	userContext := request.GetUserContext(c)
+func (h *ACQHandler) CreateACQ(c *gin.Context) {
+	var acq createacq.CreateACQCommand
 
-	filter, _ := c.GetQuery("filter")
-	gem := &getgemsourcebyuser.GetGemSourceByUserQuery{
-		UserId: userContext.UserId,
-		Filter: filter,
+	if err := c.ShouldBind(&acq); err != nil {
+		var errors []string
+		for _, fieldErr := range err.(validator.ValidationErrors) {
+			errors = append(errors, v.GetErrorMessage(c, fieldErr, h.logger))
+		}
+
+		c.JSON(http.StatusBadRequest, errors)
+		return
 	}
 
-	// if err := c.ShouldBind(&gem); err != nil {
-	// 	var errors []string
-	// 	for _, fieldErr := range err.(validator.ValidationErrors) {
-	// 		errors = append(errors, v.GetErrorMessage(c, fieldErr, h.logger))
-	// 	}
-
-	// 	c.JSON(http.StatusBadRequest, errors)
-	// 	return
-	// }
-
-	gemResponse, err := h.service.GemService.GetGemSourceByUserHandler.Handle(c, gem)
+	// gemResponse, err := h.service.GemService.GetGemSourceByUserHandler.Handle(c, gem)
+	createACQResponse, err := h.service.ACQService.CreateACQHandler.Handle(c, &acq)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(200, gemResponse)
+	c.JSON(200, createACQResponse)
 }

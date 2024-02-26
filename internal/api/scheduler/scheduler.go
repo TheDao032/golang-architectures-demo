@@ -40,5 +40,5 @@ func (sch *Scheduler) start() {
 func (sch *Scheduler) scanPendingSourceList() {
 	ctx := context.Background()
 	sch.logger.Info(ctx, "Ready To Scan Pending Source", zap.String("Scheduler Config", sch.cfg.Scheduler.CronExpression))
-	sch.service.GemService.ScanPendingGemSourceHandler.Handle(ctx)
+	// sch.service.GemService.ScanPendingGemSourceHandler.Handle(ctx)
 }
