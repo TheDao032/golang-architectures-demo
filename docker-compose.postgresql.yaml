@@ -1,0 +1,19 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+networks:
+  postgres_net:
+    name: postgres_net
+
+services:
+  local:
+    image: nthedao/timescaledb
+    networks:
+      - postgres_net
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tsdb
+    ports:
+      - 5432:5432
