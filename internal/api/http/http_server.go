@@ -13,6 +13,10 @@ type Server struct {
 	cfg                *config.AppConfig
 	healthcheckHandler *HealthcheckHandler
 	acqHandler         *v1.ACQHandler
+	navHandler         *v1.NAVHandler
+	podHandler         *v1.PODHandler
+	rawHandler         *v1.RAWHandler
+	staHandler         *v1.STAHandler
 }
 
 func NewServer(
@@ -20,8 +24,12 @@ func NewServer(
 	cfg *config.AppConfig,
 	healthcheckHandler *HealthcheckHandler,
 	acqHandler *v1.ACQHandler,
+	navHandler *v1.NAVHandler,
+	podHandler *v1.PODHandler,
+	rawHandler *v1.RAWHandler,
+	staHandler *v1.STAHandler,
 ) *Server {
-	return &Server{logger, cfg, healthcheckHandler, acqHandler}
+  return &Server{logger, cfg, healthcheckHandler, acqHandler, navHandler, podHandler, rawHandler, staHandler}
 }
 
 func (s *Server) Run() {
@@ -36,6 +44,6 @@ func (s *Server) Run() {
 	}
 	httpServer, router := httpserver.NewServer(s.logger, *config)
 	// In the future, if we have v2, v3..., we will add at here
-	MapRoutes(router, s.healthcheckHandler, s.acqHandler)
+	MapRoutes(router, s.healthcheckHandler, s.acqHandler, s.navHandler, s.podHandler, s.rawHandler, s.staHandler)
 	httpServer.Run()
 }

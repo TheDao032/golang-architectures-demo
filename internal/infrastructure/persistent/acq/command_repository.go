@@ -28,7 +28,7 @@ func (repo *acqCommandRepository) CreateACQ(ctx context.Context, acq *entities.A
 
 	_, err := repo.writeDB.Connection.NamedExec(`
 		INSERT INTO acq(
-      rx_time,
+      time,
 			experiment_id,
 			signal_id,
 			doppler,
@@ -37,7 +37,7 @@ func (repo *acqCommandRepository) CreateACQ(ctx context.Context, acq *entities.A
 			noise_floor,
 			acq_mode
 		) VALUES (
-			:rx_time,
+			:time,
 			:experiment_id,
 			:signal_id,
 			:doppler,

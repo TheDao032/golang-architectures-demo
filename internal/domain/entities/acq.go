@@ -7,7 +7,7 @@ import (
 )
 
 type ACQ struct {
-	RxTime       time.Time       `db:"rx_time"`
+	RxTime       time.Time       `db:"time"`
 	ExperimentId int             `db:"experiment_id"`
 	SignalId     int             `db:"signal_id"`
 	Doppler      float32         `db:"doppler"`

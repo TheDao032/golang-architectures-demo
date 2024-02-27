@@ -39,16 +39,16 @@ CREATE table experiment (
 );
 ---
 CREATE table log (
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_type_id INTEGER REFERENCES experiment_type(id),
     priority INTEGER REFERENCES log_priority(id),
     size INTEGER,
     message TEXT
 );
-SELECT create_hypertable('log', 'rx_time'); 
+SELECT create_hypertable('log', 'time'); 
 ---
 CREATE table raw (
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_id INTEGER REFERENCES experiment(id),
     signal_id INTEGER REFERENCES signal(id),
     sv_id INTEGER,
@@ -57,10 +57,10 @@ CREATE table raw (
     carrier_phase DOUBLE PRECISION,
     pr_raw DOUBLE PRECISION
 );
-SELECT create_hypertable('raw', 'rx_time'); 
+SELECT create_hypertable('raw', 'time'); 
 ---
 CREATE table acq (
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_id INTEGER REFERENCES experiment(id),
     signal_id INTEGER REFERENCES signal(id),
     doppler DOUBLE PRECISION,
@@ -69,10 +69,10 @@ CREATE table acq (
     noise_floor REAL,
     acq_mode SMALLINT
 );
-SELECT create_hypertable('acq', 'rx_time');
+SELECT create_hypertable('acq', 'time');
 ---
 CREATE table pod (
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_id INTEGER REFERENCES experiment(id),
     application_id INTEGER REFERENCES application(id),
     wn INTEGER,
@@ -92,10 +92,10 @@ CREATE table pod (
     ambig_vec REAL[],
     ambig_acc REAL[]
 );
-SELECT create_hypertable('pod', 'rx_time');
+SELECT create_hypertable('pod', 'time');
 ---
 CREATE table sta (
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_id INTEGER REFERENCES experiment(id),
     rx_operation_mode_id INTEGER REFERENCES operation_modes(id),
     application_id INTEGER REFERENCES application(id),
@@ -109,10 +109,10 @@ CREATE table sta (
     frontend_temp REAL,
     qn400_version_number BIGINT
 );
-SELECT create_hypertable('sta', 'rx_time');
+SELECT create_hypertable('sta', 'time');
 ---
 CREATE table nav(
-    rx_time TIMESTAMPTZ NOT NULL,
+    time TIMESTAMPTZ NOT NULL,
     experiment_id INTEGER REFERENCES experiment(id),
     application_id INTEGER REFERENCES application(id),
     wn INTEGER,
@@ -137,4 +137,4 @@ CREATE table nav(
     vdop DOUBLE PRECISION,
     tdop DOUBLE PRECISION
 );
-SELECT create_hypertable('nav', 'rx_time');
+SELECT create_hypertable('nav', 'time');

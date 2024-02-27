@@ -1,7 +1,7 @@
 package createacq
 
 type CreateACQCommand struct {
-	RxTime       float64   `json:"rxTime"`
+	Time         float64   `json:"rxTime"`
 	ExperimentId int       `json:"experimentId"`
 	SignalId     int       `json:"signalId"`
 	Doppler      float32   `json:"doppler"`
@@ -12,5 +12,5 @@ type CreateACQCommand struct {
 }
 
 type CreateACQResponse struct {
-  Data interface{} `json:"data"`
+	Data interface{} `json:"data"`
 }

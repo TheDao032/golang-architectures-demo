@@ -34,7 +34,7 @@ func (h *CreateACQHandler) Handle(ctx context.Context, createACQCommands []Creat
   for _, item := range createACQCommands {
     loc, _ := time.LoadLocation("UTC")
     acq := entities.ACQ{
-      RxTime:       time.Unix(int64(item.RxTime), 0).In(loc),
+      RxTime:       time.Unix(int64(item.Time), 0).In(loc),
       ExperimentId: item.ExperimentId,
       SignalId:     item.SignalId,
       Doppler:      item.Doppler,

@@ -15,7 +15,19 @@ import (
 	"github.com/TheDao032/golang-architectures-demo/internal/api/http/v1"
 	"github.com/TheDao032/golang-architectures-demo/internal/application/acq"
 	"github.com/TheDao032/golang-architectures-demo/internal/application/acq/commands/create_acq"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/nav"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/nav/commands/create_nav"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/pod"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/pod/commands/create_pod"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/raw"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/raw/commands/create_raw"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/sta"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/sta/commands/create_sta"
 	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/acq"
+	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/nav"
+	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/pod"
+	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/raw"
+	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/sta"
 	"github.com/TheDao032/golang-architectures-demo/internal/service"
 	"github.com/google/wire"
 )
@@ -27,9 +39,25 @@ func InitializeContainer(appCfg *config.AppConfig, logger2 logger.Logger, readDB
 	acqCommandRepository := acqpersitent.NewACQCommandRepository(writeDB, logger2)
 	createACQHandler := createacq.NewCreateACQHandler(logger2, appCfg, acqCommandRepository)
 	acqService := acqservice.NewACQService(createACQHandler)
-	serviceService := service.NewService(acqService)
+	navCommandRepository := navpersitent.NewNAVCommandRepository(writeDB, logger2)
+	createNAVHandler := createnav.NewCreateNAVHandler(logger2, appCfg, navCommandRepository)
+	navService := navservice.NewNAVService(createNAVHandler)
+	podCommandRepository := podpersitent.NewPODCommandRepository(writeDB, logger2)
+	createPODHandler := createpod.NewCreatePODHandler(logger2, appCfg, podCommandRepository)
+	podService := podservice.NewPODService(createPODHandler)
+	rawCommandRepository := rawpersitent.NewRAWCommandRepository(writeDB, logger2)
+	createRAWHandler := createraw.NewCreateRAWHandler(logger2, appCfg, rawCommandRepository)
+	rawService := rawservice.NewRAWService(createRAWHandler)
+	staCommandRepository := stapersitent.NewSTACommandRepository(writeDB, logger2)
+	createSTAHandler := createsta.NewCreateSTAHandler(logger2, appCfg, staCommandRepository)
+	staService := staservice.NewSTAService(createSTAHandler)
+	serviceService := service.NewService(acqService, navService, podService, rawService, staService)
 	acqHandler := v1.NewACQHandler(serviceService, logger2)
-	server := http.NewServer(logger2, appCfg, healthcheckHandler, acqHandler)
+	navHandler := v1.NewNAVHandler(serviceService, logger2)
+	podHandler := v1.NewPODHandler(serviceService, logger2)
+	rawHandler := v1.NewRAWHandler(serviceService, logger2)
+	staHandler := v1.NewSTAHandler(serviceService, logger2)
+	server := http.NewServer(logger2, appCfg, healthcheckHandler, acqHandler, navHandler, podHandler, rawHandler, staHandler)
 	apiContainer := api.NewApiContainer(server)
 	return apiContainer
 }
@@ -40,10 +68,10 @@ var container = wire.NewSet(api.NewApiContainer)
 
 var apiSet = wire.NewSet(http.NewServer)
 
-var serviceSet = wire.NewSet(service.NewService, http.NewHealthcheckHandler, v1.NewACQHandler)
+var serviceSet = wire.NewSet(service.NewService, http.NewHealthcheckHandler, v1.NewACQHandler, v1.NewNAVHandler, v1.NewPODHandler, v1.NewRAWHandler, v1.NewSTAHandler)
 
-var specificServiceSet = wire.NewSet(acqservice.NewACQService)
+var specificServiceSet = wire.NewSet(acqservice.NewACQService, navservice.NewNAVService, podservice.NewPODService, rawservice.NewRAWService, staservice.NewSTAService)
 
-var handlerSet = wire.NewSet(createacq.NewCreateACQHandler)
+var handlerSet = wire.NewSet(createacq.NewCreateACQHandler, createnav.NewCreateNAVHandler, createpod.NewCreatePODHandler, createraw.NewCreateRAWHandler, createsta.NewCreateSTAHandler)
 
-var repoSet = wire.NewSet(acqpersitent.NewACQCommandRepository)
+var repoSet = wire.NewSet(acqpersitent.NewACQCommandRepository, navpersitent.NewNAVCommandRepository, podpersitent.NewPODCommandRepository, rawpersitent.NewRAWCommandRepository, stapersitent.NewSTACommandRepository)

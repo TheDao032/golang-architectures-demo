@@ -8,21 +8,25 @@ import (
 	database "github.com/TheDao032/golang-architectures-demo/database"
 	"github.com/TheDao032/golang-architectures-demo/internal/api"
 	"github.com/TheDao032/golang-architectures-demo/internal/api/http"
+
 	v1 "github.com/TheDao032/golang-architectures-demo/internal/api/http/v1"
 	acqservice "github.com/TheDao032/golang-architectures-demo/internal/application/acq"
+	navservice "github.com/TheDao032/golang-architectures-demo/internal/application/nav"
+	podservice "github.com/TheDao032/golang-architectures-demo/internal/application/pod"
+	rawservice "github.com/TheDao032/golang-architectures-demo/internal/application/raw"
+	staservice "github.com/TheDao032/golang-architectures-demo/internal/application/sta"
 
 	createacq "github.com/TheDao032/golang-architectures-demo/internal/application/acq/commands/create_acq"
-	// creategemhistory "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/create_gem_history"
-	// creategemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/create_gem_source"
-	// scanpendinggemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/scan_pending_gem_source"
-	// updatependinggemdashboard "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/update_pending_gem_dashboard"
-	// getgemdashboard "github.com/TheDao032/golang-architectures-demo/internal/application/gem/queries/get_gem_dashboard"
-	// getgemsourcebysource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/queries/get_gem_source_by_source"
-	// getgemsourcebyuser "github.com/TheDao032/golang-architectures-demo/internal/application/gem/queries/get_gem_source_by_user"
-	// getpendinggemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/queries/get_pending_gem_source"
+	createnav "github.com/TheDao032/golang-architectures-demo/internal/application/nav/commands/create_nav"
+	createpod "github.com/TheDao032/golang-architectures-demo/internal/application/pod/commands/create_pod"
+	createraw "github.com/TheDao032/golang-architectures-demo/internal/application/raw/commands/create_raw"
+	createsta "github.com/TheDao032/golang-architectures-demo/internal/application/sta/commands/create_sta"
 
-	// gemrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/gem"
 	acqrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/acq"
+	navrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/nav"
+	podrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/pod"
+	rawrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/raw"
+	starepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/sta"
 	service "github.com/TheDao032/golang-architectures-demo/internal/service"
 
 	"github.com/TheDao032/go-backend-utils-architecture/logger"
@@ -41,18 +45,34 @@ var serviceSet = wire.NewSet(
 	service.NewService,
 	http.NewHealthcheckHandler,
 	v1.NewACQHandler,
+	v1.NewNAVHandler,
+	v1.NewPODHandler,
+	v1.NewRAWHandler,
+	v1.NewSTAHandler,
 )
 
 var specificServiceSet = wire.NewSet(
 	acqservice.NewACQService,
+	navservice.NewNAVService,
+	podservice.NewPODService,
+	rawservice.NewRAWService,
+	staservice.NewSTAService,
 )
 
 var handlerSet = wire.NewSet(
 	createacq.NewCreateACQHandler,
+	createnav.NewCreateNAVHandler,
+	createpod.NewCreatePODHandler,
+	createraw.NewCreateRAWHandler,
+	createsta.NewCreateSTAHandler,
 )
 
 var repoSet = wire.NewSet(
 	acqrepo.NewACQCommandRepository,
+	navrepo.NewNAVCommandRepository,
+	podrepo.NewPODCommandRepository,
+	rawrepo.NewRAWCommandRepository,
+	starepo.NewSTACommandRepository,
 )
 
 func InitializeContainer(

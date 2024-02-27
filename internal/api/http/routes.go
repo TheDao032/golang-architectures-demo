@@ -14,6 +14,10 @@ func MapRoutes(
 	router *gin.Engine,
 	healthcheckHandler *HealthcheckHandler,
   acqHandler *v1.ACQHandler,
+  navHandler *v1.NAVHandler,
+  podHandler *v1.PODHandler,
+  rawHandler *v1.RAWHandler,
+  staHandler *v1.STAHandler,
 	// gemHandler *v1.GemHandler
 ) {
 	docs.SwaggerInfo.Version = "1.0"
@@ -28,10 +32,14 @@ func MapRoutes(
 		healthcheckHandler.writeDb,
 	)
 
-	v1 := router.Group("v1/acq")
+	v1 := router.Group("v1")
 	{
 		// External
-		v1.POST("/", acqHandler.CreateACQ)
+		v1.POST("/acq", acqHandler.CreateACQ)
+		v1.POST("/nav", navHandler.CreateNAV)
+		v1.POST("/pod", podHandler.CreatePOD)
+		v1.POST("/raw", rawHandler.CreateRAW)
+		v1.POST("/sta", staHandler.CreateSTA)
 	}
 
 	router.Use(gin.WrapH(health))
