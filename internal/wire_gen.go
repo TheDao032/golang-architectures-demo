@@ -12,6 +12,11 @@ import (
 	"github.com/TheDao032/golang-architectures-demo/database"
 	"github.com/TheDao032/golang-architectures-demo/internal/api"
 	"github.com/TheDao032/golang-architectures-demo/internal/api/http"
+	"github.com/TheDao032/golang-architectures-demo/internal/api/http/v1"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/acq"
+	"github.com/TheDao032/golang-architectures-demo/internal/application/acq/commands/create_acq"
+	"github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/acq"
+	"github.com/TheDao032/golang-architectures-demo/internal/service"
 	"github.com/google/wire"
 )
 
@@ -19,7 +24,12 @@ import (
 
 func InitializeContainer(appCfg *config.AppConfig, logger2 logger.Logger, readDB *database.ReadDB, writeDB *database.WriteDB) *api.ApiContainer {
 	healthcheckHandler := http.NewHealthcheckHandler(logger2, appCfg, readDB, writeDB)
-	server := http.NewServer(logger2, appCfg, healthcheckHandler)
+	acqCommandRepository := acqpersitent.NewACQCommandRepository(writeDB, logger2)
+	createACQHandler := createacq.NewCreateACQHandler(logger2, appCfg, acqCommandRepository)
+	acqService := acqservice.NewACQService(createACQHandler)
+	serviceService := service.NewService(acqService)
+	acqHandler := v1.NewACQHandler(serviceService, logger2)
+	server := http.NewServer(logger2, appCfg, healthcheckHandler, acqHandler)
 	apiContainer := api.NewApiContainer(server)
 	return apiContainer
 }
@@ -30,4 +40,10 @@ var container = wire.NewSet(api.NewApiContainer)
 
 var apiSet = wire.NewSet(http.NewServer)
 
-var serviceSet = wire.NewSet(http.NewHealthcheckHandler)
+var serviceSet = wire.NewSet(service.NewService, http.NewHealthcheckHandler, v1.NewACQHandler)
+
+var specificServiceSet = wire.NewSet(acqservice.NewACQService)
+
+var handlerSet = wire.NewSet(createacq.NewCreateACQHandler)
+
+var repoSet = wire.NewSet(acqpersitent.NewACQCommandRepository)

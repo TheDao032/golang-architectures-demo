@@ -11,7 +11,7 @@ type ACQService struct {
 	// Queries
 }
 
-func NewGemService(
+func NewACQService(
 	// Commands
 	createACQHandler *createacq.CreateACQHandler,
 	// Queries

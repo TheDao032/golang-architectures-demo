@@ -3,7 +3,7 @@ module github.com/TheDao032/golang-architectures-demo
 go 1.21.1
 
 require (
-	github.com/TheDao032/go-backend-utils-architecture v1.0.8
+	github.com/TheDao032/go-backend-utils-architecture v1.0.9
 	github.com/TheDao032/proto v1.0.1
 	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/gammazero/workerpool v1.1.3

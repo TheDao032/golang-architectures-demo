@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/TheDao032/golang-architectures-demo/docs"
+	v1 "github.com/TheDao032/golang-architectures-demo/internal/api/http/v1"
 	"github.com/TheDao032/golang-architectures-demo/pkg/healthcheck"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ import (
 func MapRoutes(
 	router *gin.Engine,
 	healthcheckHandler *HealthcheckHandler,
+  acqHandler *v1.ACQHandler,
 	// gemHandler *v1.GemHandler
 ) {
 	docs.SwaggerInfo.Version = "1.0"
@@ -26,12 +28,11 @@ func MapRoutes(
 		healthcheckHandler.writeDb,
 	)
 
-	// v1 := router.Group("v1/gems")
-	// {
-	// 	// External
-	// 	v1.GET("/source", gemHandler.GetGemSourceByUserId)
-	// 	v1.GET("/dashboard", gemHandler.GetGemDashboard)
-	// }
+	v1 := router.Group("v1/acq")
+	{
+		// External
+		v1.POST("/", acqHandler.CreateACQ)
+	}
 
 	router.Use(gin.WrapH(health))
 

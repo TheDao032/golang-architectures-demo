@@ -36,9 +36,9 @@ func NewACQHandler(service *service.Service, logger logger.Logger) *ACQHandler {
 // @Success 200 {object} createacq.GetGemSourceByUserResponse
 // @Router /gems/source [get]
 func (h *ACQHandler) CreateACQ(c *gin.Context) {
-	var acq createacq.CreateACQCommand
+	var acqs []createacq.CreateACQCommand
 
-	if err := c.ShouldBind(&acq); err != nil {
+	if err := c.ShouldBind(&acqs); err != nil {
 		var errors []string
 		for _, fieldErr := range err.(validator.ValidationErrors) {
 			errors = append(errors, v.GetErrorMessage(c, fieldErr, h.logger))
@@ -49,7 +49,7 @@ func (h *ACQHandler) CreateACQ(c *gin.Context) {
 	}
 
 	// gemResponse, err := h.service.GemService.GetGemSourceByUserHandler.Handle(c, gem)
-	createACQResponse, err := h.service.ACQService.CreateACQHandler.Handle(c, &acq)
+	createACQResponse, err := h.service.ACQService.CreateACQHandler.Handle(c, acqs)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

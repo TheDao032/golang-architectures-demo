@@ -23,7 +23,7 @@ func NewACQCommandRepository(writeDb *database.WriteDB, logger logger.Logger) in
 }
 
 func (repo *acqCommandRepository) CreateACQ(ctx context.Context, acq *entities.ACQ) (bool, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "gemCommandRepository.CreateGemToDashboard")
+	span, ctx := opentracing.StartSpanFromContext(ctx, "acqCommandRepository.CreateACQ")
 	defer span.Finish()
 
 	_, err := repo.writeDB.Connection.NamedExec(`

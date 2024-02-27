@@ -19,7 +19,7 @@ type CreateACQHandler struct {
 	repo   interfaces.ACQCommandRepository
 }
 
-func NewCreateGemDashboardHandler(
+func NewCreateACQHandler(
 	logger logger.Logger,
 	cfg *config.AppConfig,
 	repo interfaces.ACQCommandRepository,
@@ -27,28 +27,48 @@ func NewCreateGemDashboardHandler(
 	return &CreateACQHandler{logger, cfg, repo}
 }
 
-func (h *CreateACQHandler) Handle(ctx context.Context, createACQCommand *CreateACQCommand) (*entities.ACQ, error) {
+func (h *CreateACQHandler) Handle(ctx context.Context, createACQCommands []CreateACQCommand) ([]CreateACQCommand, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "CreateACQHandler.Handle")
 	defer span.Finish()
 
-	loc, _ := time.LoadLocation("UTC")
-	acq := entities.ACQ{
-		RxTime:       time.Unix(int64(createACQCommand.RxTime), 0).In(loc),
-		ExperimentId: createACQCommand.ExperimentId,
-		SignalId:     createACQCommand.SignalId,
-		Doppler:      createACQCommand.Doppler,
-		CodePhase:    createACQCommand.CodePhase,
-		AcfCorr:      createACQCommand.AcfCorr,
-		NoiseFloor:   createACQCommand.NoiseFloor,
-		AcqMode:      createACQCommand.AcqMode,
-	}
+  for _, item := range createACQCommands {
+    loc, _ := time.LoadLocation("UTC")
+    acq := entities.ACQ{
+      RxTime:       time.Unix(int64(item.RxTime), 0).In(loc),
+      ExperimentId: item.ExperimentId,
+      SignalId:     item.SignalId,
+      Doppler:      item.Doppler,
+      CodePhase:    item.CodePhase,
+      AcfCorr:      item.AcfCorr,
+      NoiseFloor:   item.NoiseFloor,
+      AcqMode:      item.AcqMode,
+    }
 
-	_, err := h.repo.CreateACQ(ctx, &acq)
+    _, err := h.repo.CreateACQ(ctx, &acq)
+    if err != nil {
+      h.logger.Error(ctx, "ACQ has not been created successfully", zap.Error(err))
+      return nil, err
+    }
+  }
 
-	if err != nil {
-		h.logger.Error(ctx, "Gem has not been created successfully", zap.Error(err))
-		return nil, err
-	}
+	// loc, _ := time.LoadLocation("UTC")
+	// acq := entities.ACQ{
+	// 	RxTime:       time.Unix(int64(createACQCommand.RxTime), 0).In(loc),
+	// 	ExperimentId: createACQCommand.ExperimentId,
+	// 	SignalId:     createACQCommand.SignalId,
+	// 	Doppler:      createACQCommand.Doppler,
+	// 	CodePhase:    createACQCommand.CodePhase,
+	// 	AcfCorr:      createACQCommand.AcfCorr,
+	// 	NoiseFloor:   createACQCommand.NoiseFloor,
+	// 	AcqMode:      createACQCommand.AcqMode,
+	// }
 
-	return &acq, nil
+	// _, err := h.repo.CreateACQ(ctx, &acq)
+
+	// if err != nil {
+	// 	h.logger.Error(ctx, "ACQ has not been created successfully", zap.Error(err))
+	// 	return nil, err
+	// }
+
+	return createACQCommands, nil
 }

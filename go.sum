@@ -74,8 +74,8 @@ github.com/PuerkitoBio/purell v1.1.1 h1:WEQqlqaGbrPkxLJWfBwQmfEAE1Z7ONdDLqrN38tN
 github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV/sSk/8dngufqelfh6jnri85riMAaF/M=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
-github.com/TheDao032/go-backend-utils-architecture v1.0.7 h1:nEvP9FCyy9uTx4c20tZi2jX8ex1/ULn08FytQVVqVFg=
-github.com/TheDao032/go-backend-utils-architecture v1.0.7/go.mod h1:WkU+Ez1ycaHv6J7YmDcPdYgCFSWhLkfC3ZUBL7eM1zI=
+github.com/TheDao032/go-backend-utils-architecture v1.0.9 h1:sDkjoE0yG0PhaPKPPbzJtWA0JunlFB5iNg/W8mI0w7w=
+github.com/TheDao032/go-backend-utils-architecture v1.0.9/go.mod h1:bxFn03twwMK+cx1vMQFdaav6BafWZkhsQPDJ3+vAbLg=
 github.com/TheDao032/proto v1.0.1 h1:WoIjy1RWRm4ZICSy+Bc75BoNGICjLaiMgeplxHABLZE=
 github.com/TheDao032/proto v1.0.1/go.mod h1:3JDe0bpqmoLc3+B8iRvLP+HF5dRaakYbYIjpIFPLDms=
 github.com/andybalholm/brotli v1.0.0/go.mod h1:loMXtMfwqflxFJPmdbJO0a3KNoPuLBgiu3qAvBg8x/Y=

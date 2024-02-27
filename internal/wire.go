@@ -8,8 +8,10 @@ import (
 	database "github.com/TheDao032/golang-architectures-demo/database"
 	"github.com/TheDao032/golang-architectures-demo/internal/api"
 	"github.com/TheDao032/golang-architectures-demo/internal/api/http"
+	v1 "github.com/TheDao032/golang-architectures-demo/internal/api/http/v1"
+	acqservice "github.com/TheDao032/golang-architectures-demo/internal/application/acq"
 
-	// creategemdashboard "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/create_gem_dashboard"
+	createacq "github.com/TheDao032/golang-architectures-demo/internal/application/acq/commands/create_acq"
 	// creategemhistory "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/create_gem_history"
 	// creategemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/create_gem_source"
 	// scanpendinggemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/commands/scan_pending_gem_source"
@@ -20,7 +22,8 @@ import (
 	// getpendinggemsource "github.com/TheDao032/golang-architectures-demo/internal/application/gem/queries/get_pending_gem_source"
 
 	// gemrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/gem"
-	// service "github.com/TheDao032/golang-architectures-demo/internal/service"
+	acqrepo "github.com/TheDao032/golang-architectures-demo/internal/infrastructure/persistent/acq"
+	service "github.com/TheDao032/golang-architectures-demo/internal/service"
 
 	"github.com/TheDao032/go-backend-utils-architecture/logger"
 	"github.com/google/wire"
@@ -32,35 +35,25 @@ var container = wire.NewSet(
 
 var apiSet = wire.NewSet(
 	http.NewServer,
-	// scheduler.NewScheduler,
 )
 
 var serviceSet = wire.NewSet(
-	// service.NewService,
+	service.NewService,
 	http.NewHealthcheckHandler,
+	v1.NewACQHandler,
 )
 
-// var specificServiceSet = wire.NewSet(
-// 	gemservice.NewGemService,
-// )
+var specificServiceSet = wire.NewSet(
+	acqservice.NewACQService,
+)
 
-// var handlerSet = wire.NewSet(
-// creategemdashboard.NewCreateGemDashboardHandler,
-// updatependinggemdashboard.NewUpdatePendingGemDashboardHandler,
-// creategemsource.NewCreateGemSourceHandler,
-// scanpendinggemsource.NewScanPendingGemSourceHandler,
-// creategemhistory.NewCreateGemHistoryHandler,
+var handlerSet = wire.NewSet(
+	createacq.NewCreateACQHandler,
+)
 
-// getgemdashboard.NewGetGemDashboardHandler,
-// getgemsourcebysource.NewGetGemSourceBySourceHandler,
-// getgemsourcebyuser.NewGetGemSourceByUserHandler,
-// getpendinggemsource.NewGetPendingGemSourceHandler,
-// )
-
-// var repoSet = wire.NewSet(
-// 	gemrepo.NewGemQueryRepository,
-// 	gemrepo.NewGemCommandRepository,
-// )
+var repoSet = wire.NewSet(
+	acqrepo.NewACQCommandRepository,
+)
 
 func InitializeContainer(
 	appCfg *config.AppConfig,
@@ -68,6 +61,6 @@ func InitializeContainer(
 	readDB *database.ReadDB,
 	writeDB *database.WriteDB,
 ) *api.ApiContainer {
-	wire.Build(serviceSet, apiSet, container)
+	wire.Build(handlerSet, repoSet, specificServiceSet, serviceSet, apiSet, container)
 	return &api.ApiContainer{}
 }
