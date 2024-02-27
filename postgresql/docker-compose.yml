@@ -1,0 +1,23 @@
+version: '3.9'
+
+networks:
+  postgres_net:
+    name: postgres_net
+
+services:
+  local:
+    image: timescaledb
+    networks:
+      - postgres_net
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - disk0:/home/postgres/app
+
+volumes:
+  disk0:
