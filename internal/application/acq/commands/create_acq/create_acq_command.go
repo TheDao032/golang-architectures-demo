@@ -8,6 +8,7 @@ type CreateACQCommand struct {
 	CodePhase    float32   `json:"codePhase"`
 	AcfCorr      []float32 `json:"acfCorr`
 	NoiseFloor   float32   `json:"noiseFloor"`
+	Svid         int       `json:"svid"`
 	AcqMode      int16     `json:"acqMode"`
 }
 

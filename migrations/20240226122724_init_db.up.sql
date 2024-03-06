@@ -67,6 +67,7 @@ CREATE table acq (
     code_phase DOUBLE PRECISION,
     acf_corr REAL[],
     noise_floor REAL,
+    sv_id INTEGER,
     acq_mode SMALLINT
 );
 SELECT create_hypertable('acq', 'time');

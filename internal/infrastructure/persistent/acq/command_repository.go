@@ -35,6 +35,7 @@ func (repo *acqCommandRepository) CreateACQ(ctx context.Context, acq *entities.A
 			code_phase,
 			acf_corr,
 			noise_floor,
+			sv_id,
 			acq_mode
 		) VALUES (
 			:time,
@@ -44,6 +45,7 @@ func (repo *acqCommandRepository) CreateACQ(ctx context.Context, acq *entities.A
 			:code_phase,
 			:acf_corr,
 			:noise_floor,
+      :sv_id,
       :acq_mode
 		)`, acq,
 	)

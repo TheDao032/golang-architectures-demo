@@ -31,25 +31,26 @@ func (h *CreateACQHandler) Handle(ctx context.Context, createACQCommands []Creat
 	span, _ := opentracing.StartSpanFromContext(ctx, "CreateACQHandler.Handle")
 	defer span.Finish()
 
-  for _, item := range createACQCommands {
-    loc, _ := time.LoadLocation("UTC")
-    acq := entities.ACQ{
-      RxTime:       time.Unix(int64(item.Time), 0).In(loc),
-      ExperimentId: item.ExperimentId,
-      SignalId:     item.SignalId,
-      Doppler:      item.Doppler,
-      CodePhase:    item.CodePhase,
-      AcfCorr:      item.AcfCorr,
-      NoiseFloor:   item.NoiseFloor,
-      AcqMode:      item.AcqMode,
-    }
+	for _, item := range createACQCommands {
+		loc, _ := time.LoadLocation("UTC")
+		acq := entities.ACQ{
+			RxTime:       time.Unix(int64(item.Time), 0).In(loc),
+			ExperimentId: item.ExperimentId,
+			SignalId:     item.SignalId,
+			Doppler:      item.Doppler,
+			CodePhase:    item.CodePhase,
+			AcfCorr:      item.AcfCorr,
+			NoiseFloor:   item.NoiseFloor,
+			Svid:         item.Svid,
+			AcqMode:      item.AcqMode,
+		}
 
-    _, err := h.repo.CreateACQ(ctx, &acq)
-    if err != nil {
-      h.logger.Error(ctx, "ACQ has not been created successfully", zap.Error(err))
-      return nil, err
-    }
-  }
+		_, err := h.repo.CreateACQ(ctx, &acq)
+		if err != nil {
+			h.logger.Error(ctx, "ACQ has not been created successfully", zap.Error(err))
+			return nil, err
+		}
+	}
 
 	// loc, _ := time.LoadLocation("UTC")
 	// acq := entities.ACQ{

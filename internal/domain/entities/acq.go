@@ -2,8 +2,9 @@
 package entities
 
 import (
-	"github.com/lib/pq"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 type ACQ struct {
@@ -14,5 +15,6 @@ type ACQ struct {
 	CodePhase    float32         `db:"code_phase"`
 	AcfCorr      pq.Float32Array `db:"acf_corr"`
 	NoiseFloor   float32         `db:"noise_floor"`
+	Svid         int             `db:"sv_id"`
 	AcqMode      int16           `db:"acq_mode"`
 }
